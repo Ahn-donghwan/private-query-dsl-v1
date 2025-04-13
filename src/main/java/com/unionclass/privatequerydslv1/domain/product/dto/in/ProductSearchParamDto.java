@@ -1,4 +1,4 @@
-package com.unionclass.privatequerydslv1.domain.productcategory.dto.in;
+package com.unionclass.privatequerydslv1.domain.product.dto.in;
 
 import com.unionclass.privatequerydslv1.domain.product.enums.PriceRange;
 import com.unionclass.privatequerydslv1.domain.product.enums.Size;

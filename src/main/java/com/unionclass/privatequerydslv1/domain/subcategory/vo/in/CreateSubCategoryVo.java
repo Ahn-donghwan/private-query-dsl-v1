@@ -5,6 +5,6 @@ import lombok.Getter;
 @Getter
 public class CreateSubCategoryVo {
 
-    private String mainCategoryUuid;
+    private String mainCategoryName;
     private String subCategoryName;
 }

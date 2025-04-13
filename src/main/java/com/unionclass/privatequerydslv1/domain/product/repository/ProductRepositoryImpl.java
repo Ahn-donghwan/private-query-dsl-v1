@@ -1,16 +1,13 @@
 package com.unionclass.privatequerydslv1.domain.product.repository;
 
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.EnumPath;
-import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.unionclass.privatequerydslv1.domain.maincategory.entity.QMainCategory;
+import com.unionclass.privatequerydslv1.domain.product.dto.in.ProductSearchParamDto;
 import com.unionclass.privatequerydslv1.domain.product.entity.QProduct;
 import com.unionclass.privatequerydslv1.domain.product.enums.PriceRange;
 import com.unionclass.privatequerydslv1.domain.product.enums.Size;
-import com.unionclass.privatequerydslv1.domain.productcategory.dto.in.ProductSearchParamDto;
 import com.unionclass.privatequerydslv1.domain.productcategory.dto.out.ProductSearchResDto;
 import com.unionclass.privatequerydslv1.domain.productcategory.entity.QProductCategory;
 import com.unionclass.privatequerydslv1.domain.special.entity.QSpecial;
@@ -33,7 +30,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
     QSpecial specialQ = QSpecial.special;
 
     @Override
-    public List<ProductSearchResDto> searchProducts(String mainCategory, String subCategory, String special, Size size, PriceRange priceRange) {
+    public List<ProductSearchResDto> searchProducts(ProductSearchParamDto productSearchParamDto) {
 
         return queryFactory
                 .select(Projections.constructor(
@@ -47,11 +44,11 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
                 .leftJoin(subCategoryQ).on(productCategoryQ.subCategoryUuid.eq(subCategoryQ.uuid))
                 .leftJoin(specialQ).on(productCategoryQ.subCategoryUuid.eq(specialQ.uuid))
                 .where(
-                        mainCategoryEquals(mainCategory, mainCategoryQ),
-                        subCategoryEquals(subCategory, subCategoryQ),
-                        specialEquals(special, specialQ),
-                        sizeEquals(size, productQ),
-                        priceRangeEquals(priceRange, productQ)
+                        mainCategoryEquals(productSearchParamDto.getMainCategory(), mainCategoryQ),
+                        subCategoryEquals(productSearchParamDto.getSubCategory(), subCategoryQ),
+                        specialEquals(productSearchParamDto.getSpecial(), specialQ),
+                        sizeEquals(productSearchParamDto.getSize(), productQ),
+                        priceRangeEquals(productSearchParamDto.getPriceRange(), productQ)
                 )
                 .orderBy(productQ.price.asc())
                 .fetch();

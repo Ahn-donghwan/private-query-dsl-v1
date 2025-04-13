@@ -12,23 +12,23 @@ import java.util.UUID;
 @NoArgsConstructor
 public class CreateSubCategoryDto {
 
-    private String mainCategoryUuid;
+    private String mainCategoryName;
     private String subCategoryName;
 
     @Builder
-    public CreateSubCategoryDto(String mainCategoryUuid, String subCategoryName) {
-        this.mainCategoryUuid = mainCategoryUuid;
+    public CreateSubCategoryDto(String mainCategoryName, String subCategoryName) {
+        this.mainCategoryName = mainCategoryName;
         this.subCategoryName = subCategoryName;
     }
 
     public static CreateSubCategoryDto from(CreateSubCategoryVo createSubCategoryVo) {
         return CreateSubCategoryDto.builder()
-                .mainCategoryUuid(createSubCategoryVo.getMainCategoryUuid())
+                .mainCategoryName(createSubCategoryVo.getMainCategoryName())
                 .subCategoryName(createSubCategoryVo.getSubCategoryName())
                 .build();
     }
 
-    public SubCategory toEntity() {
+    public SubCategory toEntity(String mainCategoryUuid) {
         return SubCategory.builder()
                 .uuid(UUID.randomUUID().toString())
                 .mainCategoryUuid(mainCategoryUuid)
