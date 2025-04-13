@@ -1,10 +1,7 @@
 package com.unionclass.privatequerydslv1.domain.product.entity;
 
 import com.unionclass.privatequerydslv1.domain.product.enums.Size;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +17,7 @@ public class Product {
     private String uuid;
     private String name;
     private Long price;
+    @Enumerated(EnumType.STRING)
     private Size size;
 
     @Builder
