@@ -4,4 +4,6 @@ import com.unionclass.privatequerydslv1.domain.maincategory.dto.in.CreateMainCat
 
 public interface MainCategoryService {
     void createMainCategory(CreateMainCategoryDto createMainCategoryDto);
+
+    String findUuidByName(String mainCategoryName);
 }

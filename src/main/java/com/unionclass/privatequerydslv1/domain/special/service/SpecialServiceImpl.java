@@ -18,4 +18,9 @@ public class SpecialServiceImpl implements  SpecialService {
     public void createSpecial(CreateSpecialReqDto createSpecialReqDto) {
         specialRepository.save(createSpecialReqDto.toEntity());
     }
+
+    @Override
+    public String findUuidByName(String specialName) {
+        return specialRepository.findByName(specialName).getUuid();
+    }
 }

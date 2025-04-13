@@ -4,4 +4,5 @@ import com.unionclass.privatequerydslv1.domain.special.entity.Special;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SpecialRepository extends JpaRepository<Special, Long> {
+    Special findByName(String specialName);
 }

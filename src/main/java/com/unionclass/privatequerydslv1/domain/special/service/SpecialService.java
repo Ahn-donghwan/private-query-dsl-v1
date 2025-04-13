@@ -4,4 +4,6 @@ import com.unionclass.privatequerydslv1.domain.special.dto.in.CreateSpecialReqDt
 
 public interface SpecialService {
     void createSpecial(CreateSpecialReqDto createSpecialReqDto);
+
+    String findUuidByName(String specialName);
 }

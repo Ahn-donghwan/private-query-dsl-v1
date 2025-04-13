@@ -1,6 +1,7 @@
 package com.unionclass.privatequerydslv1.domain.maincategory.service;
 
 import com.unionclass.privatequerydslv1.domain.maincategory.dto.in.CreateMainCategoryDto;
+import com.unionclass.privatequerydslv1.domain.maincategory.entity.MainCategory;
 import com.unionclass.privatequerydslv1.domain.maincategory.repository.MainCategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,5 +18,10 @@ public class MainCategoryServiceImpl implements MainCategoryService {
     @Override
     public void createMainCategory(CreateMainCategoryDto createMainCategoryDto) {
         mainCategoryRepository.save(createMainCategoryDto.toEntity());
+    }
+
+    @Override
+    public String findUuidByName(String mainCategoryName) {
+        return mainCategoryRepository.findByName(mainCategoryName).getUuid();
     }
 }
