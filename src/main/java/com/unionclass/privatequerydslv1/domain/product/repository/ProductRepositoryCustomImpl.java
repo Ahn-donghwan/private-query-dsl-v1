@@ -75,7 +75,4 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
     private BooleanExpression mainCategoryEquals(String mainCategory, QMainCategory mainCategoryQ) {
         return mainCategory != null ? mainCategoryQ.name.eq(mainCategory) : null;
     }
-
-
-
 }
