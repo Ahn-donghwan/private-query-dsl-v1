@@ -19,7 +19,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class ProductRepositoryImpl implements ProductRepositoryCustom {
+public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
