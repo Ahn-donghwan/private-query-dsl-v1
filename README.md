@@ -189,11 +189,11 @@ clean {
 <details>
   <summary>🔽 **[ STEP 4 - CustomRepository 인터페이스 및 구현체 생성 ]** 🔽</summary>
 
-![repositoryCustom 구현](https://github.com/user-attachments/assets/c327f020-b293-4e6a-bea6-b4ca1fb0c586)
+![productRepositoryCustomImpl 구현](https://github.com/user-attachments/assets/e2631a7c-0295-461f-95c2-cdcc01e6a3c4)
 
 <pre>
 ```java
-public interface ProductRepository extends JpaRepository<Product, Long>, ProductRepositoryCustom {...}
+public interface ProductRepository extends JpaRepository&lt;Product, Long&gt;, ProductRepositoryCustom {...}
   
 </pre>
 
@@ -201,7 +201,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Product
 ```java
 @Repository
 @RequiredArgsConstructor
-public class ProductRepositoryImpl implements ProductRepositoryCustom {...}
+public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {...}
   
 </pre>
 
