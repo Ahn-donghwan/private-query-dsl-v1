@@ -1,16 +1,14 @@
 package com.unionclass.privatequerydslv1.domain.product.service;
 
 import com.unionclass.privatequerydslv1.domain.product.dto.in.CreateProductReqDto;
+import com.unionclass.privatequerydslv1.domain.product.dto.in.PaginationParamDto;
 import com.unionclass.privatequerydslv1.domain.product.dto.in.ProductSearchParamDto;
-import com.unionclass.privatequerydslv1.domain.product.enums.PriceRange;
-import com.unionclass.privatequerydslv1.domain.product.enums.Size;
 import com.unionclass.privatequerydslv1.domain.product.repository.ProductRepository;
 import com.unionclass.privatequerydslv1.domain.productcategory.dto.out.ProductSearchResDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +29,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductSearchResDto> searchProducts(ProductSearchParamDto productSearchParamDto) {
-        return productRepository.searchProducts(productSearchParamDto);
+    public Page<ProductSearchResDto> searchProducts(
+            ProductSearchParamDto productSearchParamDto,
+            PaginationParamDto paginationParamDto
+    ) {
+
+        return productRepository.searchProducts(
+                productSearchParamDto,
+                paginationParamDto.toPageable()
+        );
     }
 }

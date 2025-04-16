@@ -4,6 +4,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.unionclass.privatequerydslv1.domain.maincategory.entity.QMainCategory;
+import com.unionclass.privatequerydslv1.domain.product.dto.in.PaginationParamDto;
 import com.unionclass.privatequerydslv1.domain.product.dto.in.ProductSearchParamDto;
 import com.unionclass.privatequerydslv1.domain.product.entity.QProduct;
 import com.unionclass.privatequerydslv1.domain.product.enums.PriceRange;
@@ -13,9 +14,13 @@ import com.unionclass.privatequerydslv1.domain.productcategory.entity.QProductCa
 import com.unionclass.privatequerydslv1.domain.special.entity.QSpecial;
 import com.unionclass.privatequerydslv1.domain.subcategory.entity.QSubCategory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -30,9 +35,12 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
     QSpecial specialQ = QSpecial.special;
 
     @Override
-    public List<ProductSearchResDto> searchProducts(ProductSearchParamDto productSearchParamDto) {
+    public Page<ProductSearchResDto> searchProducts(
+            ProductSearchParamDto productSearchParamDto,
+            Pageable pageable
+    ) {
 
-        return queryFactory
+        List<ProductSearchResDto> content = queryFactory
                 .select(Projections.constructor(
                         ProductSearchResDto.class,
                         productQ.name,
@@ -51,7 +59,29 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
                         priceRangeEquals(productSearchParamDto.getPriceRange(), productQ)
                 )
                 .orderBy(productQ.price.asc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
+
+        Long total = Optional.ofNullable(
+                queryFactory
+                        .select(productQ.count())
+                        .from(productQ)
+                        .join(productCategoryQ).on(productQ.uuid.eq(productCategoryQ.productUuid))
+                        .leftJoin(mainCategoryQ).on(productCategoryQ.mainCategoryUuid.eq(mainCategoryQ.uuid))
+                        .leftJoin(subCategoryQ).on(productCategoryQ.subCategoryUuid.eq(subCategoryQ.uuid))
+                        .leftJoin(specialQ).on(productCategoryQ.specialUuid.eq(specialQ.uuid))
+                        .where(
+                                mainCategoryEquals(productSearchParamDto.getMainCategory(), mainCategoryQ),
+                                subCategoryEquals(productSearchParamDto.getSubCategory(), subCategoryQ),
+                                specialEquals(productSearchParamDto.getSpecial(), specialQ),
+                                sizeEquals(productSearchParamDto.getSize(), productQ),
+                                priceRangeEquals(productSearchParamDto.getPriceRange(), productQ)
+                        )
+                        .fetchOne()
+        ).orElse(0L);
+
+        return new PageImpl<>(content, pageable, total);
     }
 
     private BooleanExpression priceRangeEquals(PriceRange priceRange, QProduct productQ) {
