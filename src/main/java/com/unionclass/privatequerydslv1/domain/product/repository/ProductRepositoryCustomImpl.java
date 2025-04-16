@@ -42,7 +42,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
                 .join(productCategoryQ).on(productQ.uuid.eq(productCategoryQ.productUuid))
                 .leftJoin(mainCategoryQ).on(productCategoryQ.mainCategoryUuid.eq(mainCategoryQ.uuid))
                 .leftJoin(subCategoryQ).on(productCategoryQ.subCategoryUuid.eq(subCategoryQ.uuid))
-                .leftJoin(specialQ).on(productCategoryQ.subCategoryUuid.eq(specialQ.uuid))
+                .leftJoin(specialQ).on(productCategoryQ.specialUuid.eq(specialQ.uuid))
                 .where(
                         mainCategoryEquals(productSearchParamDto.getMainCategory(), mainCategoryQ),
                         subCategoryEquals(productSearchParamDto.getSubCategory(), subCategoryQ),
