@@ -63,7 +63,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        Long total = Optional.ofNullable(
+        long total = Optional.ofNullable(
                 queryFactory
                         .select(productQ.count())
                         .from(productQ)
